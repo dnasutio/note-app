@@ -1,28 +1,38 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import Editor from "./components/Editor";
 import Split from "react-split";
 import {nanoid} from "nanoid";
 
 export default function App() {
-    const [notes, setNotes] = React.useState(
+    const [notes, setNotes] = useState(
         () => JSON.parse(localStorage.getItem("notes")) || []
     );
-    const [currentNoteId, setCurrentNoteId] = React.useState(
+    const [currentNoteId, setCurrentNoteId] = useState(
         (notes[0] && notes[0].id) || ""
     );
+    // state used to switch from displaying all notes and just important notes
+    const [importantFilter, setImportantFilter] = useState(false);
     
-    React.useEffect(() => {
+    useEffect(() => {
         localStorage.setItem("notes", JSON.stringify(notes))
     }, [notes]);
     
+    const [curr, setCurr] = useState(0);
     function createNewNote() {
         const newNote = {
             id: nanoid(),
-            body: "# Type your markdown note's title here"
+            body: `${curr}# Type your markdown note's title here`,
+            important: false
         }
-        setNotes(prevNotes => [newNote, ...prevNotes])
-        setCurrentNoteId(newNote.id)
+        setCurr(prev => prev + 1);
+        setNotes(prevNotes => [newNote, ...prevNotes]);
+        setCurrentNoteId(newNote.id);
+    }
+
+    // this function triggers when important filter is on
+    function showImportant() {
+        setImportantFilter(prev => !prev);
     }
     
     function updateNote(text) {
@@ -32,18 +42,30 @@ export default function App() {
             for(let i = 0; i < oldNotes.length; i++) {
                 const oldNote = oldNotes[i]
                 if(oldNote.id === currentNoteId) {
-                    newArray.unshift({ ...oldNote, body: text })
+                    newArray.unshift({ ...oldNote, body: text });
                 } else {
-                    newArray.push(oldNote)
+                    newArray.push(oldNote);
                 }
             }
-            return newArray
+            return newArray;
         });
     }
     
     function deleteNote(event, noteId) {
-        event.stopPropagation()
-        setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId))
+        event.stopPropagation();
+        setNotes(oldNotes => oldNotes.filter(note => note.id !== noteId));
+        setCurr(prev => prev - 1);
+    }
+
+    // flips the importance of a note when the "!" button on the note is clicked
+    // TODO: produdces bug, fix it
+    function setImportance(event, noteId) {
+        event.stopPropagation();
+        setNotes(oldNotes => oldNotes.map(note => {
+            if (note.id === noteId)
+                return !note.important;
+            return note;
+        }));
     }
     
     function findCurrentNote() {
@@ -65,9 +87,12 @@ export default function App() {
               <Sidebar
                   notes={notes}
                   currentNote={findCurrentNote()}
+                  showImportant={showImportant}
+                  importantFilter={importantFilter}
                   setCurrentNoteId={setCurrentNoteId}
                   newNote={createNewNote}
                   deleteNote={deleteNote}
+                  setImportance={setImportance}
               />
               {
                   currentNoteId && 

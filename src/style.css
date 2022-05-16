@@ -149,11 +149,15 @@ button:focus {
     display: block;
 }
 
+.title:hover > .important-btn {
+    display: block;
+}
+
 .trash-icon {
     cursor: pointer;
 }
 
- .gg-trash {
+.gg-trash {
     box-sizing: border-box;
     position: relative;
     display: block;
@@ -196,4 +200,21 @@ button:focus {
     border-top-right-radius: 2px;
     top: -7px;
     left: -2px
-} 
+}
+
+.important-filter {
+    cursor: pointer;
+    background-color: #eb0909;
+    border: none;
+    color: white;
+    border-radius: 3px;
+    height: 30px;
+    width: 30px;
+}
+
+.important-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
