@@ -58,14 +58,26 @@ export default function App() {
     }
 
     // flips the importance of a note when the "!" button on the note is clicked
-    // TODO: produdces bug, fix it
     function setImportance(event, noteId) {
         event.stopPropagation();
-        setNotes(oldNotes => oldNotes.map(note => {
-            if (note.id === noteId)
-                return !note.important;
-            return note;
-        }));
+        let note, index;
+
+        // find the note to mark as important (linear search)
+        for (let i = 0; i < notes.length; i++) {
+            if (notes[i].id === noteId) {
+                note = notes[i];
+                index = i;
+                break;
+            }
+        }
+        note.important = !note.important;
+        // update notes array to contain same number of elements but one of them is now marked important
+        setNotes((oldNotes) => [
+            ...oldNotes.slice(0, index),
+            note,
+            ...oldNotes.slice(index + 1, notes.length)
+        ]);
+        console.log(notes);
     }
     
     function findCurrentNote() {

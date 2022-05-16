@@ -217,4 +217,11 @@ button:focus {
     background: none;
     border: none;
     cursor: pointer;
+    color:#eb0909;
+    font-weight: bold;
+}
+
+.important-mark {
+    color:#eb0909;
+    font-weight: bold;
 }
