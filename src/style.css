@@ -153,6 +153,10 @@ button:focus {
     display: block;
 }
 
+.title:hover > .important-mark {
+    display: none;
+}
+
 .trash-icon {
     cursor: pointer;
 }
@@ -219,9 +223,11 @@ button:focus {
     cursor: pointer;
     color:#eb0909;
     font-weight: bold;
+    font-size: medium;
 }
 
 .important-mark {
     color:#eb0909;
     font-weight: bold;
+    font-size: medium
 }
