@@ -224,10 +224,14 @@ button:focus {
     color:#eb0909;
     font-weight: bold;
     font-size: medium;
+    right: 30px;
+    position: relative;
 }
 
 .important-mark {
     color:#eb0909;
     font-weight: bold;
-    font-size: medium
+    font-size: medium;
+    right: 30px;
+    position: relative;
 }
